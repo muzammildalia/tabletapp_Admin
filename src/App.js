@@ -32,11 +32,11 @@ import createCache from "@emotion/cache";
 import routes from "routes";
 
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useMaterialUIController, setMiniSidenav, setOpenConfigurator, setDarkMode } from "context";
 
 // Images
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import brandWhite from "assets/images/titleIcon.png";
+import brandDark from "assets/images/titleIcon.png";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "context/auth";
 // import { useAuth } from "context/auth";
@@ -90,12 +90,25 @@ export default function App() {
   useEffect(() => {
     document.body.setAttribute("dir", direction);
   }, [direction]);
-
+  // Loading dark mode value from local storage
+  useEffect(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem('DARKMODE'));
+    if (savedDarkMode !== null) {
+      setDarkMode(dispatch, savedDarkMode);
+    }
+  }, [setDarkMode, dispatch]);
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
+  const updateDarkModeToLocalStorage = (value) => {
+    localStorage.setItem('DARKMODE', JSON.stringify(value));
+  };
+
+  useEffect(() => {
+    updateDarkModeToLocalStorage(controller.darkMode);
+  }, [controller.darkMode]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -117,14 +130,14 @@ export default function App() {
       alignItems="center"
       width="3.25rem"
       height="3.25rem"
-      bgColor="white"
+      bgColor={darkMode ? "#202940" : "white"}
       shadow="sm"
       borderRadius="50%"
       position="fixed"
       right="2rem"
       bottom="2rem"
       zIndex={99}
-      color="dark"
+      color={darkMode ? "white" : "black"}
       sx={{ cursor: "pointer" }}
       onClick={handleConfiguratorOpen}
     >
@@ -144,7 +157,7 @@ export default function App() {
             <Sidenav
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName="Tablet Planner App"
+              brandName="Tablet Planner"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}

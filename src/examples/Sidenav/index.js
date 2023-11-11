@@ -211,7 +211,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           />
         </Link> */}
       </List>
-      <MDBox p={2} mt="auto">
+      {/* <MDBox p={2} mt="auto">
         <MDButton
           component="a"
           // href="https://www.creative-tim.com/product/material-dashboard-pro-react"
@@ -223,7 +223,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         >
           Tablet Planner App
         </MDButton>
-      </MDBox>
+      </MDBox> */}
     </SidenavRoot>
   );
 }

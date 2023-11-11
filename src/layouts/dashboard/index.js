@@ -15,49 +15,88 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-import React from "react";
+import React, { useEffect, useState } from "react";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import clientapi from "api/clientapi";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [users, setUsers] = useState(0);
+  const [plans, setPlans] = useState(0);
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await clientapi.get(
+          `admin/getusers`,
+        );
+        setUsers(res.data.length)
+      } catch (error) {
+        console.log('Error fetching user Tasks:', error);
+      }
+    };
+    const fetchPlans = async () => {
+      try {
+        const res = await clientapi.get(
+          `plans/getplans`
+        )
+        if (res.data && res.data.length > 0) {
+          setPlans(res.data.length);
+        } else {
+          setPlans(0);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error Fetching Plans");
+      }
+    }
+    fetchPlans();
+    fetchUsers();
+
+  }, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={6}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
+                color="info"
+                icon="event_list"
+                title="Plans"
+                count={plans}
+                onClick={() => { navigate("/plans") }}
+              // percentage={{
+              //   color: "success",
+              //   amount: "+55%",
+              //   label: "than lask week",
+              // }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={6}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
+                icon="group"
+                title="Total Registered Users"
+                count={users}
+                color="success"
+                onClick={() => { navigate("/users") }}
+              // percentage={{
+              //   color: "success",
+              //   amount: "+3%",
+              //   label: "than last month",
+              // }}                
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
@@ -71,8 +110,8 @@ function Dashboard() {
                 }}
               />
             </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          </Grid> */}
+          {/* <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="primary"
@@ -86,7 +125,7 @@ function Dashboard() {
                 }}
               />
             </MDBox>
-          </Grid>
+          </Grid> */}
         </Grid>
         {/* <MDBox mt={4.5}>
           <Grid container spacing={3}>

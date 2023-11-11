@@ -45,10 +45,10 @@ function Tables() {
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
+                  isSorted={true}
+                  entriesPerPage={true}
+                  showTotalEntries={true}
+                  noEndBorder={false}
                 />
               </MDBox>
             </Card>

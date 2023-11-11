@@ -71,10 +71,10 @@ function Basic() {
     }
   };
   const onButtonClick = () => {
-
+    console.log("red")
     // Set initial error values to empty
-    setEmailError("")
-    setPasswordError("")
+    setEmailError("heee")
+    setPasswordError("sdsfd")
 
     // Check if the user has entered both fields correctly
     if ("" === email) {
@@ -92,7 +92,7 @@ function Basic() {
       return
     }
 
-    if (password.length < 7) {
+    if (password.length < 6) {
       setPasswordError("The password must be 8 characters or longer")
       return
     }

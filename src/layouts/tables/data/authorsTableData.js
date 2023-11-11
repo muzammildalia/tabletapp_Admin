@@ -96,13 +96,13 @@ export default function data() {
     </MDBox>
   );
   Job.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
   };
   const rows = data.map((user, index) => ({
     user: <Author key={index} name={user.name} email={user.email} />,
     Plan: <Job title={user.plan} />,
     status: (
-      <MDBox ml={-1}>
+      <MDBox ml={-1} alignItems="center">
         <Switch
           checked={user.is_Active}
           onChange={() => handleSwitchChange(user._id)} // Pass the user's ID
@@ -114,18 +114,18 @@ export default function data() {
         {user.createdAt}
       </MDTypography>
     ),
-    action: (
-      <MDTypography component="a" href={user.editLink} variant="caption" color="text" fontWeight="medium">
-        Edit
-      </MDTypography>
-    ),
+    // action: (
+    //   <MDTypography component="a" href={user.editLink} variant="caption" color="text" fontWeight="medium">
+    //     Edit
+    //   </MDTypography>
+    // ),
   }));
   const columns = [
     { Header: "user", accessor: "user", width: "45%", align: "left" },
     { Header: "Plan", accessor: "Plan", align: "center" },
     { Header: "status", accessor: "status", align: "center" },
     { Header: "registered date", accessor: "registereddate", align: "center" },
-    { Header: "action", accessor: "action", align: "center" },
+    // { Header: "action", accessor: "action", align: "center" },
   ]
   return {
     columns,
